@@ -8,8 +8,13 @@ export interface Options {
     title?: string;
     useTextFile?: boolean,
     useBom?: boolean;
-    headers?: string[];
+    additionalHeaders?: Header[];
+    columnHeaders?: string[];
     useKeysAsHeaders?: boolean;
+}
+
+export class Header{
+    columns: string[];
 }
 
 export class CsvConfigConsts {
@@ -41,7 +46,7 @@ export const ConfigDefaults: Options = {
     title: CsvConfigConsts.DEFAULT_TITLE,
     useTextFile: CsvConfigConsts.DEFAULT_USE_TEXT_FILE,
     useBom: CsvConfigConsts.DEFAULT_USE_BOM,
-    headers: CsvConfigConsts.DEFAULT_HEADER,
+    columnHeaders: CsvConfigConsts.DEFAULT_HEADER,
     useKeysAsHeaders: CsvConfigConsts.DEFAULT_KEYS_AS_HEADERS,
 };
 export class ExportToCsv {
@@ -66,8 +71,8 @@ export class ExportToCsv {
 
         if (
             this._options.useKeysAsHeaders
-            && this._options.headers
-            && this._options.headers.length > 0
+            && this._options.columnHeaders
+            && this._options.columnHeaders.length > 0
         ) {
             console.warn('Option to use object keys as headers was set, but headers were still passed!');
         }
@@ -92,6 +97,7 @@ export class ExportToCsv {
         }
 
         this._getHeaders();
+        this._getColumnHeaders();
         this._getBody();
 
         if (this._csv == '') {
@@ -130,14 +136,35 @@ export class ExportToCsv {
     }
 
     /**
-     * Create Headers
+     * Create CSV Headers
      */
     private _getHeaders(): void {
+        if (!this._options.additionalHeaders) {
+            return;
+        }
+
+        let headers = this._options.additionalHeaders;
+
+        let row = "";
+        for (let keyPos = 0; keyPos < headers.length; keyPos++) {
+            headers[keyPos].columns.forEach(header => {
+                row += header + this._options.fieldSeparator;
+            });
+        }
+
+        row = row.slice(0, -1);
+        this._csv += row + CsvConfigConsts.EOL;
+    }
+
+    /**
+     * Create Column Headers
+     */
+    private _getColumnHeaders(): void {
         if (!this._options.showLabels && !this._options.useKeysAsHeaders) {
             return;
         }
         const useKeysAsHeaders = this._options.useKeysAsHeaders;
-        const headers = useKeysAsHeaders ? Object.keys(this._data[0]) : this._options.headers;
+        const headers = useKeysAsHeaders ? Object.keys(this._data[0]) : this._options.columnHeaders;
 
         if (headers.length > 0) {
             let row = "";

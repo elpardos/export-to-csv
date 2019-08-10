@@ -54,11 +54,6 @@ describe('ExportToCsv', () => {
         expect(keys).toEqual(mockDataKeys);
     });
 
-    // it('should properly overwrite default options through contructor', () => {
-    //     const exportToCsvInstance = new ExportToCsv();
-    //     const defaults = { ...exportToCsvInstance.options };
-    // });
-
     it('should initiate download through spawned browser', () => {
         if (!window) {
             pending('it should only initiate download when run in browser context');
@@ -73,6 +68,28 @@ describe('ExportToCsv', () => {
         exportToCsvInstance.generateCsv(mockData);
 
     });
+
+    it('should allow additional headers to be added to the top of the CSV', () => {
+        const additionalHeaderString = "MyAdditionalHeader";
+        const additionalHeaders = [
+            {
+                columns: [additionalHeaderString]
+            }
+        ]
+        const options: Options = {
+            title: "Test Csv",
+            useBom: true,
+            useKeysAsHeaders: true,
+            additionalHeaders: additionalHeaders
+        };
+
+        const exportToCsvInstance = new ExportToCsv(options);
+        const string = exportToCsvInstance.generateCsv(mockData, true);
+
+        const firstLine = string.split('\n')[0];
+
+        expect(firstLine).toContain(additionalHeaderString);
+    })
 });
 
 describe('ExportToCsv As A Text File', () => {

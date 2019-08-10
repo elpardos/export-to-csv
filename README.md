@@ -1,5 +1,6 @@
-# export-to-csv | Export to CSV Mini Library
-Based off of [this library](https://github.com/javiertelioz/angular2-csv) by Javier Telio
+# ts-export-to-csv | Export to CSV Mini Library
+Based off of [this library](https://github.com/alexcaza/export-to-csv) by Alex Caza
+Which is Based off of [this library](https://github.com/javiertelioz/angular2-csv) by Javier Telio
 
 > Helper library to quickly and easily create a CSV file in browser or Node
 > 
@@ -7,8 +8,8 @@ Based off of [this library](https://github.com/javiertelioz/angular2-csv) by Jav
 ## Installation
 
 ```javascript
-yarn add export-to-csv
-// npm install --save export-to-csv
+yarn add ts-export-to-csv
+// npm install --save ts-export-to-csv
 ```
 
 ## Usage
@@ -50,7 +51,8 @@ var data = [
     useTextFile: false,
     useBom: true,
     useKeysAsHeaders: true,
-    // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
+    // headers: ['Column 1', 'Column 2', etc...], <-- Won't work with useKeysAsHeaders present!
+    additionalHeaders: [{columns: ["HeaderRow1Column1", "HeaderRow1Column2"]}, {columns: ["HeaderRow2Column1","HeaderRow2Column2"]}]
   };
 
 const csvExporter = new ExportToCsv(options);
@@ -74,13 +76,15 @@ csvExporter.generateCsv(data);
 | **useBom** | true      | If true, adds a BOM character at the start of the CSV to improve file compatibility |
 | **useTextFile** | false      | If true, returns a `.txt` file instead of `.csv` |
 | **useKeysAsHeaders** | false      | If true, this will use the keys of the first object in the collection as the column headers|
-| **headers** | []      | Expects an array of strings, which if supplied, will be used as the column headers|
+| **columnHeaders** | []      | Expects an array of strings, which if supplied, will be used as the column headers|
+| **additionalHeaders** | []  | Expects an array of Headers, which is an object containing an array of strings {'columns': string[]}, each header object represents an additional row (and columns) of data to be added at the start of the CSV |
 
 
 # Thanks!
 
 |        Credits and Original Authors        |
 | :------------- |
+| **[alexcaza](https://github.com/alexcaza)**|
 | **[javiertelioz](https://github.com/javiertelioz)** |
 | **[sn123](https://github.com/sn123)** |
 | **[arf1980](https://github.com/arf1980)** |
