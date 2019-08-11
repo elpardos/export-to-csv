@@ -148,7 +148,7 @@ export class ExportToCsv {
         let row = "";
         for (let keyPos = 0; keyPos < headers.length; keyPos++) {
             headers[keyPos].columns.forEach(header => {
-                row += header + this._options.fieldSeparator;
+                row += this._formatData(header) + this._options.fieldSeparator;
             });
             row = row.slice(0, -1);
             this._csv += row + CsvConfigConsts.EOL;

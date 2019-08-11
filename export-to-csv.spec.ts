@@ -91,6 +91,30 @@ describe('ExportToCsv', () => {
         expect(firstLine).toContain(additionalHeaderString);
     });
 
+    it('should allow additional headers to be added to the top of the CSV and encase headers with commas in quotes', () => {
+        const additionalHeaderString = "MyAdditional,Header";
+        const additionalHeaderStringExpected = "\"MyAdditional,Header\"";
+        const additionalHeaders = [
+            {
+                columns: [additionalHeaderString]
+            }
+        ]
+        const options: Options = {
+            title: "Test Csv",
+            useBom: true,
+            useKeysAsHeaders: true,
+            additionalHeaders: additionalHeaders
+        };
+
+        const exportToCsvInstance = new ExportToCsv(options);
+        const string = exportToCsvInstance.generateCsv(mockData, true);
+
+        const firstLine = string.split('\n')[0];
+
+        expect(firstLine).toContain(additionalHeaderString);
+        expect(firstLine).toContain(additionalHeaderStringExpected);
+    });
+
     it('should allow additional headers to be added to the top of the CSV as individual rows', () => {
         const additionalHeaderString = "MyAdditionalHeader";
         const additionalSecondaryHeaderString = "MySecondaryAdditionalHeader";
