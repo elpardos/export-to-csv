@@ -152,6 +152,7 @@ export class ExportToCsv {
             });
             row = row.slice(0, -1);
             this._csv += row + CsvConfigConsts.EOL;
+            row = "";
         }  
     }
 

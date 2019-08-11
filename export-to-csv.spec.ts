@@ -119,6 +119,35 @@ describe('ExportToCsv', () => {
         expect(secondLine).toContain(additionalSecondaryHeaderString);
     });
 
+    it('should allow additional headers to be added to the top of the CSV as individual rows without repetition', () => {
+        const additionalHeaderString = "MyAdditionalHeader";
+        const additionalSecondaryHeaderString = "MySecondaryAdditionalHeader";
+        const additionalHeaders = [
+            {
+                columns: [additionalHeaderString]
+            },
+            {
+                columns: [additionalSecondaryHeaderString]
+            }
+        ]
+        const options: Options = {
+            title: "Test Csv",
+            useBom: true,
+            useKeysAsHeaders: true,
+            additionalHeaders: additionalHeaders
+        };
+
+        const exportToCsvInstance = new ExportToCsv(options);
+        const string = exportToCsvInstance.generateCsv(mockData, true);
+
+        const firstLine = string.split('\n')[0];
+        const secondLine = string.split('\n')[1];
+
+        expect(firstLine).toContain(additionalHeaderString);
+        expect(secondLine).toContain(additionalSecondaryHeaderString);
+        expect(secondLine).not.toContain(additionalHeaderString);
+    });
+
     it('should allow additional headers to be added to the top of the CSV as individual columns', () => {
         const additionalHeaderString = "MyAdditionalHeader";
         const additionalSecondaryHeaderString = "MySecondaryAdditionalHeader";
@@ -142,6 +171,7 @@ describe('ExportToCsv', () => {
         expect(firstLine).toContain(additionalHeaderString);
         expect(firstLine).toContain(additionalSecondaryHeaderString);
     });
+
 });
 
 describe('ExportToCsv As A Text File', () => {
