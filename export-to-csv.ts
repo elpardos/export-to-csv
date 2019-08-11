@@ -150,10 +150,9 @@ export class ExportToCsv {
             headers[keyPos].columns.forEach(header => {
                 row += header + this._options.fieldSeparator;
             });
-        }
-
-        row = row.slice(0, -1);
-        this._csv += row + CsvConfigConsts.EOL;
+            row = row.slice(0, -1);
+            this._csv += row + CsvConfigConsts.EOL;
+        }  
     }
 
     /**

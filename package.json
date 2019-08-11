@@ -1,6 +1,6 @@
 {
     "name": "ts-export-to-csv",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "Easily create CSV data from json collection",
     "repository": {
         "type": "git",
